@@ -1,8 +1,8 @@
-# 6-Week Intensive LLM Workshop
+# 7-Week Intensive LLM Workshop
 
 ## Overview/Introduction
 
-Welcome to the 6-Week Intensive LLM Workshop! This workshop is designed to take you from the foundational concepts of Large Language Models (LLMs) to practical applications like Retrieval Augmented Generation (RAG) and sentiment analysis. You'll learn about the core mechanisms that power LLMs, how to interact with them effectively, and how to build simple applications using them.
+Welcome to the 7-Week Intensive LLM Workshop! This workshop is designed to take you from the foundational concepts of Large Language Models (LLMs) to practical applications like Retrieval Augmented Generation (RAG) and sentiment analysis. You'll learn about the core mechanisms that power LLMs, how to interact with them effectively, and how to build simple applications using them.
 
 This is a hands-on workshop featuring:
 *   **Weekly Lectures:** Covering theoretical concepts and practical code.
@@ -127,6 +127,7 @@ Here is a week-by-week breakdown of the workshop content:
     *   `[Week 6 Lab](./week6/lab/)`
     *   `[Week 6 Assignment](./week6/assignment/)`
 
+### Week 7: Building Simple LLM Applications: (Remaining to create it's Lecture, Lab & Assignment)
 ---
 
 ## Setup Instructions

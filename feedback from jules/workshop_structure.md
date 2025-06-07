@@ -1,4 +1,4 @@
-# 8-Week LLM Workshop Structure
+# 7-Week LLM Workshop Structure
 
 ## Week 1: Introduction to LLMs and Local Setup
 
@@ -170,32 +170,6 @@
 *   **Enhance Your LLM App:** Add a new feature to the application built during the lab session (e.g., history, ability to choose different LLMs, more sophisticated UI elements).
     *   Proposed format: Coding problem (Python script).
 
-## Week 8: Advanced Topics & Future Directions
 
-**Learning Objectives:**
-* Get an overview of advanced LLM concepts like Agents and Multimodal LLMs.
-* Discuss the future directions and ethical considerations in LLM development.
-* (Optional) Opportunity for participants to present their workshop projects.
-
-**Lecture Topics:**
-*   **LLM Agents:** Conceptual overview of autonomous agents, ReAct framework, and tool usage by LLMs. (New Lecture, Week 8, to be developed).
-    *   Proposed format: Markdown document.
-*   **Multimodal LLMs:** Introduction to models that can process and generate multiple types of data (text, images, audio). (New Lecture, Week 8, to be developed).
-    *   Proposed format: Markdown document with examples (e.g., GPT-4V, LLaVA).
-*   **Ethical Considerations and Responsible AI:** Bias, fairness, misinformation, and the importance of developing LLMs responsibly. (New Lecture, Week 8, to be developed).
-    *   Proposed format: Markdown document for discussion.
-*   **The Future of LLMs:** Emerging research areas, potential impact on various industries, and continuous learning. (New Lecture, Week 8, to be developed).
-    *   Proposed format: Markdown document.
-
-**Lab Session:**
-*   **Exploring Agentic Behavior (Conceptual Demo):** Showcase a simple demo of an LLM using a tool (e.g., a calculator or a search API via LangChain or a similar framework if feasible within a lab's complexity).
-    *   Proposed format: Demo with code walkthrough (Jupyter Notebook or Python script).
-*   **Or, Project Work/Q&A:** Dedicated time for participants to work on a small, self-defined project or ask questions about topics covered in the workshop.
-
-**Assignment:**
-*   **LLM Future Trends Reflection:** Write a short reflection on what you believe is the most exciting or concerning future trend in LLM technology and why.
-    *   Proposed format: Q&A (short written reflection).
-*   **(Optional) Final Project:** Participants can choose to work on a more substantial project combining concepts from the workshop (e.g., a RAG-powered chatbot with a Gradio interface).
-    *   Proposed format: Coding project with a brief presentation/report.
 
 This structure provides a comprehensive plan. Content for new lectures will need to be created, and existing material will be adapted and enhanced as noted.
