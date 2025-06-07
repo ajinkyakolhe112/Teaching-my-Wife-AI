@@ -1,90 +1,38 @@
 """
-RAG Implementation using LangChain
-This demonstrates how to build a RAG system using LangChain's components
+Simple RAG implementation using LangChain for question answering.
 """
 
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.chains import RetrievalQA
-from langchain.llms import HuggingFaceHub
 from datasets import load_dataset
-import os
 
-class LangChainRAG:
-    def __init__(self):
-        print("Initializing LangChain RAG system...")
-        
-        # Initialize the embedding model
+class SimpleRAG:
+    def __init__(self, num_books=100):
+        """Initialize RAG system with specified number of books."""
         self.embeddings = HuggingFaceEmbeddings(
             model_name="sentence-transformers/all-MiniLM-L6-v2"
         )
-        
-        # Initialize text splitter
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
-            chunk_overlap=200,
-            length_function=len
+            chunk_overlap=200
         )
-        
-        # Load dataset
-        print("Loading Project Gutenberg dataset...")
-        self.dataset = load_dataset("manu/project_gutenberg", split="train")
-        
-        # Process and index the documents
-        self._process_documents()
-        
-    def _process_documents(self):
-        """Process documents and create vector store"""
-        print("Processing documents and creating vector store...")
-        
-        # Process first 100 books
-        texts = []
-        for book in self.dataset[:100]:
-            texts.append(book['text'])
-        
-        # Split texts into chunks
-        print("Splitting texts into chunks...")
+        self._setup_vector_store(num_books)
+    
+    def _setup_vector_store(self, num_books):
+        """Create vector store from Project Gutenberg books."""
+        dataset = load_dataset("manu/project_gutenberg", split="train")
+        texts = [book['text'] for book in dataset[:num_books]]
         chunks = self.text_splitter.create_documents(texts)
-        
-        # Create vector store
-        print("Creating vector store...")
         self.vectorstore = FAISS.from_documents(chunks, self.embeddings)
-        
-        # Create retriever
-        self.retriever = self.vectorstore.as_retriever(
-            search_kwargs={"k": 3}
-        )
-        
-        print("Vector store created successfully!")
+        self.retriever = self.vectorstore.as_retriever(search_kwargs={"k": 3})
     
     def answer_question(self, question):
-        """
-        Answer a question using LangChain's RAG
-        
-        Args:
-            question (str): The question to answer
-            
-        Returns:
-            str: Answer to the question
-        """
-        print(f"\nQuestion: {question}")
-        
-        # Get relevant documents
-        docs = self.retriever.get_relevant_documents(question)
-        
-        print("\nMost relevant passages:")
-        for i, doc in enumerate(docs, 1):
-            print(f"\n--- Passage {i} ---")
-            print(doc.page_content[:500] + "...")
-        
-        return docs
+        """Retrieve relevant passages for a given question."""
+        return self.retriever.get_relevant_documents(question)
 
 def main():
-    # Initialize RAG system
-    rag = LangChainRAG()
-    
-    # Example questions
+    rag = SimpleRAG()
     questions = [
         "What is the meaning of life?",
         "Tell me about love and romance",
@@ -92,10 +40,11 @@ def main():
         "How do people deal with loss and grief?"
     ]
     
-    # Answer each question
     for question in questions:
-        rag.answer_question(question)
-        print("\n" + "="*80 + "\n")
+        print(f"\nQuestion: {question}")
+        docs = rag.answer_question(question)
+        for i, doc in enumerate(docs, 1):
+            print(f"\nPassage {i}: {doc.page_content[:200]}...")
 
 if __name__ == "__main__":
     main() 

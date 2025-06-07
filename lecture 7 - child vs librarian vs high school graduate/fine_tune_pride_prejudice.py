@@ -17,6 +17,7 @@ from transformers import (
 )
 import requests
 import os
+from datasets import load_dataset
 
 class PridePrejudiceFineTuner:
     def __init__(self):
@@ -45,23 +46,25 @@ class PridePrejudiceFineTuner:
         print("Book downloaded successfully!")
     
     def prepare_dataset(self):
-        """Prepare the dataset for training"""
+        """Prepare the dataset for training using Hugging Face Datasets."""
         print("Preparing dataset...")
-        
-        # Create dataset
-        train_dataset = TextDataset(
-            tokenizer=self.tokenizer,
-            file_path="pride_prejudice.txt",
-            block_size=128  # Small block size for demonstration
-        )
-        
-        # Create data collator
+
+        # Load the text file as a dataset
+        datasets = load_dataset("text", data_files={"train": "pride_prejudice.txt"})
+
+        # Tokenize the dataset
+        def tokenize_function(examples):
+            return self.tokenizer(examples["text"], truncation=True, padding="max_length", max_length=128)
+
+        tokenized_datasets = datasets.map(tokenize_function, batched=True, remove_columns=["text"])
+
+        # Data collator
         data_collator = DataCollatorForLanguageModeling(
             tokenizer=self.tokenizer,
-            mlm=False  # We're doing causal language modeling
+            mlm=False
         )
-        
-        return train_dataset, data_collator
+
+        return tokenized_datasets["train"], data_collator
     
     def fine_tune(self, train_dataset, data_collator):
         """Fine-tune the model"""
@@ -76,6 +79,13 @@ class PridePrejudiceFineTuner:
             save_steps=1000,
             save_total_limit=2,
             logging_steps=100,
+            # Add these new arguments
+            learning_rate=5e-5,
+            weight_decay=0.01,
+            warmup_steps=500,
+            gradient_accumulation_steps=4,
+            fp16=False,  # Disable mixed precision training
+            optim="adamw_torch",  # Use PyTorch's AdamW implementation
         )
         
         # Initialize trainer
