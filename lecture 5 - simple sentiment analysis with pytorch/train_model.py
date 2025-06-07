@@ -4,7 +4,6 @@ from torch.utils.data import DataLoader, TensorDataset
 from simple_sentiment_model import SimpleSentimentModel, load_and_prepare_data
 import numpy as np
 from tqdm import tqdm
-import wandb
 
 def train_model(model, train_loader, criterion, optimizer, device, num_epochs=5):
     model.train()
@@ -39,16 +38,10 @@ def train_model(model, train_loader, criterion, optimizer, device, num_epochs=5)
                 'loss': f'{total_loss/(batch_idx+1):.4f}',
                 'acc': f'{100.*correct/total:.2f}%'
             })
-            
-            # Log batch metrics to wandb
-            wandb.log({'batch_loss': loss.item(), 'batch_accuracy': (predicted == labels).float().mean().item()})
         
         # Calculate epoch metrics
         epoch_loss = total_loss/len(train_loader)
         epoch_accuracy = 100.*correct/total
-        
-        # Log epoch metrics to wandb
-        wandb.log({'epoch': epoch + 1, 'epoch_loss': epoch_loss, 'epoch_accuracy': epoch_accuracy})
         
         # Print epoch statistics
         print(f'\nEpoch {epoch + 1}/{num_epochs}:')
@@ -56,9 +49,6 @@ def train_model(model, train_loader, criterion, optimizer, device, num_epochs=5)
         print(f'Accuracy: {epoch_accuracy:.2f}%')
 
 def main():
-    # Initialize wandb
-    wandb.init(project="sentiment-analysis", name="simple-sentiment-model")
-    
     # Set device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f'Using device: {device}')
@@ -69,9 +59,6 @@ def main():
     # Initialize model
     model = SimpleSentimentModel(len(tokenizer.word2idx))
     model = model.to(device)
-    
-    # Log model architecture to wandb
-    wandb.watch(model)
     
     # Define loss function and optimizer
     criterion = nn.BCEWithLogitsLoss()
@@ -86,9 +73,6 @@ def main():
         'tokenizer': tokenizer,
     }, 'sentiment_model.pth')
     print('\nModel saved to sentiment_model.pth')
-    
-    # Close wandb run
-    wandb.finish()
 
 if __name__ == "__main__":
     main() 
