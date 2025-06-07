@@ -1,3 +1,6 @@
+
+# TODO: 1. Upload trained model on HF. gpt2 & large models on pride and prejudice
+# TODO: 2. bigger model &  fine-tuning on that
 """
 Simple Fine-tuning of a Language Model on Pride and Prejudice
 This demonstrates the graduate course analogy where we:
@@ -40,7 +43,8 @@ class PridePrejudiceFineTuner:
     def download_book(self):
         """Download Pride and Prejudice from Project Gutenberg"""
         print("Downloading Pride and Prejudice...")
-        url = "https://www.gutenberg.org/files/1342/1342-0.txt"
+        url = "
+        "
         response = requests.get(url)
         
         # Save the book
