@@ -2,6 +2,14 @@
 
 This workshop is designed to take you from zero to understanding and working with Large Language Models (LLMs). The workshop consists of 16 lectures, with the first 6 lectures covering fundamental concepts and practical implementations.
 
+## Concepts & Skills to learn Roadmap
+- [ ] Using LLM (AIStudio, NotebookLM, Jules & misc - ChatGPT, )
+- [ ] Introduction to DL Neural Network 
+- [ ] Using LLM with Code (`transformers` library). & stages tokenizer, model, ouput & decode
+- [ ] Sentiment Analysis with `transformers` & `LLMs`
+- [ ] Sentiment Analysis with `pytorch`
+- [ ] Pre-training, Fine-tuning, RAG, Agentic
+
 ## Workshop Outline
 
 ### Lecture 1: Introduction to LLMs
@@ -14,7 +22,7 @@ This workshop is designed to take you from zero to understanding and working wit
 - Required tools and dependencies
 - See [INSTALLATION.md](INSTALLATION.md) for detailed setup instructions
 
-### Lecture 3: LLama research paper reading
+### Lecture 3: Simple Basics of LLM & LLama Research paper
 - Basic concepts of language modeling
 - Tokenization and vocabulary
 - Model architecture overview
@@ -33,6 +41,10 @@ This workshop is designed to take you from zero to understanding and working wit
 - Hands-on coding exercises
 - Working with real-world examples
 - Best practices and tips
+
+### Lecture 7: LLM for just Dataset searching vs LLM Learning from Dataset 
+
+
 
 ## Additional Resources
 - [Installation Guide](INSTALLATION.md)
