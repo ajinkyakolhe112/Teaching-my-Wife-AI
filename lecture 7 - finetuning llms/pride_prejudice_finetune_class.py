@@ -43,8 +43,7 @@ class PridePrejudiceFineTuner:
     def download_book(self):
         """Download Pride and Prejudice from Project Gutenberg"""
         print("Downloading Pride and Prejudice...")
-        url = "
-        "
+        url = "https://www.gutenberg.org/files/1342/1342-0.txt"
         response = requests.get(url)
         
         # Save the book
