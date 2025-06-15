@@ -42,7 +42,9 @@ This workshop is designed to take you from zero to understanding and working wit
 - Working with real-world examples
 - Best practices and tips
 
-### Lecture 7: LLM for just Dataset searching vs LLM Learning from Dataset 
+### Lecture 7: LLM Fine-tuning
+
+### Lecture 8: LLM Instruction Fine-tuning
 
 
 
