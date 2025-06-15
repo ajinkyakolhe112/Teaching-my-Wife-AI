@@ -16,16 +16,16 @@ TRAINING_CONFIG = {
 def get_model_and_tokenizer():
     print("Loading model and tokenizer...")
     
-    # Load tokenizer
+    # Load tokenizer & model
     tokenizer = transformers.AutoTokenizer.from_pretrained(TRAINING_CONFIG["model_name"])
-    tokenizer.pad_token = tokenizer.eos_token
-    
-    # Load model
+    model = transformers.AutoModelForCausalLM.from_pretrained(TRAINING_CONFIG["model_name"])
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
-    model = transformers.AutoModelForCausalLM.from_pretrained(TRAINING_CONFIG["model_name"]).to(device)
+    model = model.to(device)
+    tokenizer.pad_token = tokenizer.eos_token
     
-    return model, tokenizer, device
+    return model, tokenizer
 
 # 2. Download the dataset
 def download_dataset():
@@ -145,7 +145,7 @@ def generate_code(model, tokenizer, device, instruction, input_text=""):
 # Main execution
 if __name__ == "__main__":
     # 1. Get the model
-    model, tokenizer, device = get_model_and_tokenizer()
+    model, tokenizer = get_model_and_tokenizer()
     
     # 2. Download the dataset
     dataset = download_dataset()
@@ -160,6 +160,7 @@ if __name__ == "__main__":
     train_model(trainer)
     
     # Test the model
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("\nTesting model...")
     test_instruction = "Write a Python function to calculate the Fibonacci sequence."
     test_input = "The function should take a number n as input and return the nth Fibonacci number."
