@@ -43,9 +43,17 @@ This workshop is designed to take you from zero to understanding and working wit
 - Best practices and tips
 
 ### Lecture 7: LLM Fine-tuning
+- Used example of `pride and prejudice`
 
 ### Lecture 8: LLM Instruction Fine-tuning
 
+### Lecture 9: Running LLM Application on Gradio. Demo of text, speech & image models
+
+### Lecture 10: creating custom instruction dataset
+
+### Lecture 11: parameter efficient fine-tuning
+
+### Lecture 12: 0 to ChatGPT for domain specific chatGPT
 
 
 ## Additional Resources
