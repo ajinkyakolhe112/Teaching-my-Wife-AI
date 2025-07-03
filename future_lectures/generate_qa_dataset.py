@@ -34,7 +34,7 @@ class QADatasetGenerator:
         response = requests.get(url)
         
         # Save the book
-        with open("pride_prejudice.txt", "w", encoding="utf-8") as f:
+        with open("datasets/pride_prejudice.txt", "w", encoding="utf-8") as f:
             f.write(response.text)
         
         print("Book downloaded successfully!")
