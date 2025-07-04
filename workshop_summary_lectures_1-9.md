@@ -1,4 +1,4 @@
-# Workshop Summary: Lectures 1-9 - "0 to LLM" Workshop
+# Workshop Summary: Lectures 1-12 - "0 to LLM" Workshop
 
 ## Workshop Overview
 This is a comprehensive 12-lecture workshop designed to take students from zero knowledge to building custom LLM applications. The workshop uses a human development analogy as a core mental model throughout the curriculum.
