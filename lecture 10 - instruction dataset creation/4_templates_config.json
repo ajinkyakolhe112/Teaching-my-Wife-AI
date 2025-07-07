@@ -1,0 +1,146 @@
+{
+  "question_templates": {
+    "character_analysis": {
+      "basic": [
+        "Who is {character} in Pride and Prejudice?",
+        "What are the main personality traits of {character}?",
+        "Describe the character of {character}.",
+        "What role does {character} play in the story?"
+      ],
+      "intermediate": [
+        "How does {character} change throughout the novel?",
+        "What motivates {character} to act the way they do?",
+        "Compare and contrast {character1} and {character2}.",
+        "What are the strengths and weaknesses of {character}?"
+      ],
+      "advanced": [
+        "Analyze the psychological complexity of {character}.",
+        "How does {character} represent broader themes in the novel?",
+        "What does {character}'s relationship with {character2} reveal about both characters?",
+        "Discuss the social commentary embodied by {character}."
+      ]
+    },
+    "themes": {
+      "basic": [
+        "What is the main theme of Pride and Prejudice?",
+        "How is {theme} portrayed in the novel?",
+        "What does the novel say about {theme}?",
+        "Give examples of {theme} in the story."
+      ],
+      "intermediate": [
+        "How does Austen develop the theme of {theme}?",
+        "What is the relationship between {theme1} and {theme2}?",
+        "How do different characters embody the theme of {theme}?",
+        "What is Austen's commentary on {theme}?"
+      ],
+      "advanced": [
+        "Analyze how {theme} reflects Regency society.",
+        "How does {theme} contribute to the novel's moral philosophy?",
+        "Discuss the subversion of {theme} in the novel.",
+        "What is the significance of {theme} in the novel's resolution?"
+      ]
+    },
+    "plot_events": {
+      "basic": [
+        "What happens in {event}?",
+        "When does {event} occur in the story?",
+        "Who is involved in {event}?",
+        "What leads to {event}?"
+      ],
+      "intermediate": [
+        "How does {event} affect the plot?",
+        "What are the consequences of {event}?",
+        "How does {event} change the characters?",
+        "What does {event} reveal about the characters?"
+      ],
+      "advanced": [
+        "Analyze the significance of {event} in the novel's structure.",
+        "How does {event} contribute to the novel's themes?",
+        "What does {event} reveal about Regency society?",
+        "Discuss the dramatic irony in {event}."
+      ]
+    },
+    "social_context": {
+      "basic": [
+        "What was {aspect} like in Regency England?",
+        "How does the novel reflect {aspect} of the time?",
+        "What role does {aspect} play in the story?",
+        "How do characters interact with {aspect}?"
+      ],
+      "intermediate": [
+        "How does {aspect} influence the characters' decisions?",
+        "What does the novel reveal about {aspect}?",
+        "How do different social classes view {aspect}?",
+        "What conflicts arise from {aspect}?"
+      ],
+      "advanced": [
+        "Analyze how {aspect} shapes the novel's social commentary.",
+        "How does {aspect} reflect broader historical changes?",
+        "What does the novel's treatment of {aspect} reveal about Austen's views?",
+        "Discuss the subversion of {aspect} in the novel."
+      ]
+    }
+  },
+  "characters": {
+    "major": [
+      "Elizabeth Bennet",
+      "Mr. Darcy",
+      "Jane Bennet",
+      "Mr. Bingley",
+      "Mr. Bennet",
+      "Mrs. Bennet"
+    ],
+    "minor": [
+      "Lydia Bennet",
+      "George Wickham",
+      "Mr. Collins",
+      "Lady Catherine",
+      "Caroline Bingley",
+      "Charlotte Lucas",
+      "Mary Bennet"
+    ]
+  },
+  "themes": [
+    "pride",
+    "prejudice",
+    "love",
+    "marriage",
+    "social class",
+    "reputation",
+    "family",
+    "individualism",
+    "education"
+  ],
+  "events": [
+    "the Netherfield ball",
+    "Darcy's first proposal",
+    "Lydia's elopement",
+    "Darcy's letter",
+    "Lady Catherine's visit",
+    "the second proposal",
+    "Jane and Bingley's courtship",
+    "Mr. Collins's proposal",
+    "Elizabeth's visit to Pemberley"
+  ],
+  "social_aspects": [
+    "marriage laws",
+    "social hierarchy",
+    "etiquette",
+    "property inheritance",
+    "female education",
+    "social mobility",
+    "reputation",
+    "family duty"
+  ],
+  "categories": [
+    "character_analysis",
+    "themes",
+    "plot_events",
+    "social_context"
+  ],
+  "difficulties": [
+    "basic",
+    "intermediate",
+    "advanced"
+  ]
+} 
