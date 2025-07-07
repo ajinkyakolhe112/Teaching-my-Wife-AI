@@ -12,10 +12,6 @@ model = keras.Sequential([
 ])
 ```
 
-    /opt/anaconda3/lib/python3.12/site-packages/keras/src/layers/core/dense.py:87: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
-      super().__init__(activity_regularizer=activity_regularizer, **kwargs)
-
-
 ```python
 # SIMPLE NEURAL NETWORK OF 3 Layers
 from tensorflow import keras
@@ -72,41 +68,4 @@ history = model.fit(
 history_df = pd.DataFrame(history.history)
 history_df.loc[:, ['loss', 'val_loss']].plot()
 print("Minimum validation loss: {}".format(history_df['val_loss'].min()))
-```
-
-    Training data shape: (16512, 8)
-    Training labels shape: (16512,)
-    Validation data shape: (4128, 8)
-    Validation labels shape: (4128,)
-    Epoch 1/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m1s[0m 4ms/step - loss: 165462.2969 - val_loss: 112487.9062
-    Epoch 2/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 4ms/step - loss: 110078.9766 - val_loss: 86305.1875
-    Epoch 3/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 5ms/step - loss: 84356.5938 - val_loss: 80464.6328
-    Epoch 4/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 4ms/step - loss: 78700.1719 - val_loss: 78591.1562
-    Epoch 5/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 5ms/step - loss: 77271.5391 - val_loss: 77416.8906
-    Epoch 6/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 4ms/step - loss: 76859.7578 - val_loss: 73810.4062
-    Epoch 7/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 5ms/step - loss: 75087.0312 - val_loss: 72750.2344
-    Epoch 8/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 5ms/step - loss: 71502.5078 - val_loss: 70191.2578
-    Epoch 9/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 5ms/step - loss: 70382.8438 - val_loss: 69623.7969
-    Epoch 10/10
-    [1m65/65[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 5ms/step - loss: 69390.0625 - val_loss: 65838.2891
-    Minimum validation loss: 65838.2890625
-
-
-
-    
-![png](output_2_1.png)
-    
-
-
-```python
-
 ```

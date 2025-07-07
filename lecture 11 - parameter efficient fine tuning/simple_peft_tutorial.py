@@ -6,7 +6,7 @@ Fine-tune Llama 1 on Pride and Prejudice IFT dataset
 
 import torch
 import json
-from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments, Trainer
+from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments, Trainer, DataCollatorForLanguageModeling
 from peft import LoraConfig, get_peft_model
 from datasets import Dataset
 
@@ -41,12 +41,7 @@ def load_model():
         tokenizer.pad_token = tokenizer.eos_token
 
     # Load model with quantization for memory efficiency
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        torch_dtype=torch.float16,
-        device_map="auto",
-        # Removed load_in_4bit=True as it requires GPU support with bitsandbytes
-    )
+    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float32, device_map="auto")
 
     print("✅ Model loaded successfully!")
     return model, tokenizer
@@ -106,7 +101,8 @@ def train_model(peft_model, tokenizer, tokenized_dataset):
         learning_rate=2e-4,
         logging_steps=10,
         save_steps=100,
-        fp16=True,                    # Mixed precision
+        fp16=False,                    # Mixed precision
+        report_to="none",
     )
 
     # Set up trainer
@@ -114,6 +110,7 @@ def train_model(peft_model, tokenizer, tokenized_dataset):
         model=peft_model,
         args=training_args,
         train_dataset=tokenized_dataset,
+        data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
     )
 
     # Train
@@ -138,7 +135,7 @@ def test_model(peft_model, tokenizer):
 
         # Format prompt
         prompt = f"### Instruction:\n{question}\n\n### Response:\n"
-        inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512)
+        inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512).to(peft_model.device)
 
         # Generate
         with torch.no_grad():
