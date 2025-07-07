@@ -11,30 +11,47 @@ import json
 import random
 from typing import List, Dict, Any
 from google import genai
+import os, dotenv
 
-# Configuration
+dotenv.load_dotenv()
+# Get the API key from environment variables
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-# Configuration file path
+
+# The name of our configuration file
 TEMPLATES_CONFIG_FILE = "4_templates_config.json"
 
 def load_templates_config():
-    """Load templates and configuration from JSON file."""
+    """Load our question templates and settings from a JSON file."""
+    
+    # Try to open and read the configuration file
     try:
-        with open(TEMPLATES_CONFIG_FILE, 'r', encoding='utf-8') as f:
-            config = json.load(f)
-        print(f"✅ Loaded templates from {TEMPLATES_CONFIG_FILE}")
+        # Open the file in read mode with UTF-8 encoding
+        with open(TEMPLATES_CONFIG_FILE, 'r', encoding='utf-8') as file:
+            # Convert the JSON text into a Python dictionary
+            config = json.load(file)
+        
+        print(f"✅ Successfully loaded templates from {TEMPLATES_CONFIG_FILE}")
         return config
+        
     except FileNotFoundError:
-        print(f"❌ Templates config file not found: {TEMPLATES_CONFIG_FILE}")
+        # This error happens when the file doesn't exist
+        print(f"❌ Error: Could not find the file {TEMPLATES_CONFIG_FILE}")
+        print("   Make sure the file exists in the same folder as this script")
         return None
-    except json.JSONDecodeError as e:
-        print(f"❌ Error parsing templates config: {e}")
+        
+    except json.JSONDecodeError as error:
+        # This error happens when the JSON file has invalid syntax
+        print(f"❌ Error: The file {TEMPLATES_CONFIG_FILE} has invalid JSON format")
+        print(f"   Details: {error}")
         return None
 
-# Load configuration
+# Load our configuration when the script starts
+print("📖 Loading configuration...")
 CONFIG = load_templates_config()
-if not CONFIG:
-    print("❌ Failed to load configuration. Exiting.")
+
+# Check if we successfully loaded the configuration
+if CONFIG is None:
+    print("❌ Cannot continue without configuration. Please fix the error above.")
     exit(1)
 
 # Extract configuration data

@@ -12,13 +12,13 @@ def main():
     
     book_text = load_book()
     
-    questions = generate_questions(num_questions=5)
+    questions = generate_questions(num_questions=15)
     
     save_questions(questions)
     
     questions = load_questions()
     
-    dataset = create_qa_pairs(questions, book_text)
+    dataset = create_qa_pairs_from_llm(questions, book_text)
     
     show_preview(dataset)
     
@@ -26,10 +26,11 @@ def main():
     
     print(f"\n🎉 Created {len(dataset)} QA pairs!")
 
-
 import json
 from google import genai
+import os, dotenv
 
+dotenv.load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 def ask_gemini(prompt):
@@ -75,7 +76,7 @@ def generate_questions(num_questions=10):
                 questions.append(question)
     return questions[:num_questions]
 
-def create_qa_pair(question, book_text):
+def get_answer_from_llm(question, book_text):
     """Create one question-answer pair."""
     prompt = f"""
     You are an expert on Pride and Prejudice.
@@ -121,12 +122,12 @@ def load_questions(filename="questions.txt"):
         print(f"❌ Failed to load questions: {e}")
         return []
 
-def create_qa_pairs(questions, book_text):
+def create_qa_pairs_from_llm(questions, book_text):
     """Create all question-answer pairs."""
     dataset = []
     for i, question in enumerate(questions, 1):
-        print(f"Progress: {i}/{len(questions)}")
-        qa_pair = create_qa_pair(question, book_text)
+        print(f"Getting answers from LLM. Progress: {i}/{len(questions)}")
+        qa_pair = get_answer_from_llm(question, book_text)
         dataset.append(qa_pair)
     return dataset
 
