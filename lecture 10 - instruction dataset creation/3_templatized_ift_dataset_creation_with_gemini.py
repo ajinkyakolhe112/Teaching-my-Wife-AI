@@ -7,6 +7,46 @@ This version uses templates to generate different types of questions based on
 the knowledge taxonomy for more comprehensive and organized datasets.
 """
 
+def main():
+    """Main function - demonstrates templatized dataset creation approaches."""
+    print("🎯 Templatized IFT Dataset Creation with Gemini")
+    
+    book_text = load_book()
+    if not book_text:
+        return
+    
+    print("\nChoose dataset creation mode:")
+    print("1. Comprehensive dataset (all categories, all difficulties)")
+    print("2. Specialized dataset (single category and difficulty)")
+    
+    choice = input("\nEnter choice (1 or 2): ").strip()
+    
+    if choice == "1":
+        print("\nCreating comprehensive dataset...")
+        dataset = create_comprehensive_dataset(book_text, questions_per_category=2)
+        filename = "pride_prejudice_comprehensive_ift.json"
+    elif choice == "2":
+        print("\nAvailable categories:", categories)
+        category = input("Enter category: ").strip()
+        
+        print("Available difficulties:", difficulties)
+        difficulty = input("Enter difficulty: ").strip()
+        
+        count = int(input("Enter number of questions (default 10): ") or "10")
+        
+        print(f"\nCreating specialized dataset for {category} ({difficulty})...")
+        dataset = create_specialized_dataset(book_text, category, difficulty, count)
+        filename = f"pride_prejudice_{category}_{difficulty}_ift.json"
+    else:
+        print("Invalid choice!")
+        return
+    
+    show_dataset_stats(dataset)
+    show_preview(dataset)
+    save_dataset(dataset, filename)
+    
+    print(f"\n🎉 Created {len(dataset)} QA pairs!")
+
 import json
 import random
 from typing import List, Dict, Any
@@ -17,51 +57,13 @@ dotenv.load_dotenv()
 # Get the API key from environment variables
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
-# The name of our configuration file
-TEMPLATES_CONFIG_FILE = "4_templates_config.json"
+# Load configuration
+with open("4_templates_config.json", 'r') as f:
+    config = json.load(f)
 
-def load_templates_config():
-    """Load our question templates and settings from a JSON file."""
-    
-    # Try to open and read the configuration file
-    try:
-        # Open the file in read mode with UTF-8 encoding
-        with open(TEMPLATES_CONFIG_FILE, 'r', encoding='utf-8') as file:
-            # Convert the JSON text into a Python dictionary
-            config = json.load(file)
-        
-        print(f"✅ Successfully loaded templates from {TEMPLATES_CONFIG_FILE}")
-        return config
-        
-    except FileNotFoundError:
-        # This error happens when the file doesn't exist
-        print(f"❌ Error: Could not find the file {TEMPLATES_CONFIG_FILE}")
-        print("   Make sure the file exists in the same folder as this script")
-        return None
-        
-    except json.JSONDecodeError as error:
-        # This error happens when the JSON file has invalid syntax
-        print(f"❌ Error: The file {TEMPLATES_CONFIG_FILE} has invalid JSON format")
-        print(f"   Details: {error}")
-        return None
-
-# Load our configuration when the script starts
-print("📖 Loading configuration...")
-CONFIG = load_templates_config()
-
-# Check if we successfully loaded the configuration
-if CONFIG is None:
-    print("❌ Cannot continue without configuration. Please fix the error above.")
-    exit(1)
-
-# Extract configuration data
-QUESTION_TEMPLATES = CONFIG["question_templates"]
-CHARACTERS = CONFIG["characters"]
-THEMES = CONFIG["themes"]
-EVENTS = CONFIG["events"]
-SOCIAL_ASPECTS = CONFIG["social_aspects"]
-CATEGORIES = CONFIG["categories"]
-DIFFICULTIES = CONFIG["difficulties"]
+# Extract data
+templates, characters, themes, events = config["question_templates"], config["characters"], config["themes"], config["events"]
+social_aspects, categories, difficulties = config["social_aspects"], config["categories"], config["difficulties"]
 
 def ask_gemini(prompt: str) -> str:
     """Send prompt to Gemini and get response."""
@@ -79,50 +81,55 @@ def ask_gemini(prompt: str) -> str:
 def load_book() -> str:
     """Load Pride and Prejudice text."""
     try:
-        with open("datasets/pride_prejudice.txt", "r", encoding="utf-8") as f:
-            return f.read()
-    except FileNotFoundError:
-        print("❌ Book file not found: datasets/pride_prejudice.txt")
+        import requests
+        print("📥 Downloading Pride and Prejudice from Project Gutenberg...")
+        text = requests.get("https://www.gutenberg.org/cache/epub/1342/pg1342.txt").text
+        print("✅ Text downloaded successfully")
+        return text
+    except Exception as e:
+        print(f"❌ Failed to download text: {e}")
         return ""
+
+
 
 def generate_templatized_questions(category: str, difficulty: str, count: int = 5) -> List[str]:
     """Generate questions using templates for a specific category and difficulty."""
-    templates = QUESTION_TEMPLATES.get(category, {}).get(difficulty, [])
-    if not templates:
+    question_templates = templates.get(category, {}).get(difficulty, [])
+    if not question_templates:
         return []
     
     questions = []
     for _ in range(count):
-        template = random.choice(templates)
+        template = random.choice(question_templates)
         
         if category == "character_analysis":
             if "character1" in template and "character2" in template:
-                char1 = random.choice(CHARACTERS["major"])
-                char2 = random.choice(CHARACTERS["major"])
+                char1 = random.choice(characters["major"])
+                char2 = random.choice(characters["major"])
                 while char2 == char1:
-                    char2 = random.choice(CHARACTERS["major"])
+                    char2 = random.choice(characters["major"])
                 question = template.format(character1=char1, character2=char2)
             else:
-                character = random.choice(CHARACTERS["major"] + CHARACTERS["minor"])
+                character = random.choice(characters["major"] + characters["minor"])
                 question = template.format(character=character)
         
         elif category == "themes":
-            theme = random.choice(THEMES)
+            theme = random.choice(themes)
             if "theme1" in template and "theme2" in template:
-                theme1 = random.choice(THEMES)
-                theme2 = random.choice(THEMES)
+                theme1 = random.choice(themes)
+                theme2 = random.choice(themes)
                 while theme2 == theme1:
-                    theme2 = random.choice(THEMES)
+                    theme2 = random.choice(themes)
                 question = template.format(theme1=theme1, theme2=theme2)
             else:
                 question = template.format(theme=theme)
         
         elif category == "plot_events":
-            event = random.choice(EVENTS)
+            event = random.choice(events)
             question = template.format(event=event)
         
         elif category == "social_context":
-            aspect = random.choice(SOCIAL_ASPECTS)
+            aspect = random.choice(social_aspects)
             question = template.format(aspect=aspect)
         
         else:
@@ -132,7 +139,7 @@ def generate_templatized_questions(category: str, difficulty: str, count: int = 
     
     return questions
 
-def create_qa_pair(question: str, book_text: str, category: str, difficulty: str) -> Dict[str, Any]:
+def get_answer_from_llm(question: str, book_text: str, category: str = "", difficulty: str = "") -> Dict[str, Any]:
     """Create one question-answer pair with metadata."""
     prompt = f"""
     You are an expert on Pride and Prejudice.
@@ -148,30 +155,38 @@ def create_qa_pair(question: str, book_text: str, category: str, difficulty: str
     if not answer:
         answer = "Failed to generate answer"
     
-    return {
+    qa_pair = {
         "question": question,
-        "answer": answer.strip(),
-        "category": category,
-        "difficulty": difficulty,
-        "type": "instruction_following"
+        "answer": answer.strip()
     }
+    
+    # Add metadata if provided
+    if category:
+        qa_pair["category"] = category
+    if difficulty:
+        qa_pair["difficulty"] = difficulty
+        qa_pair["type"] = "instruction_following"
+    
+    return qa_pair
+
+
 
 def create_comprehensive_dataset(book_text: str, questions_per_category: int = 3) -> List[Dict[str, Any]]:
     """Create a comprehensive dataset using all categories and difficulty levels."""
     dataset = []
     
-    total_questions = len(CATEGORIES) * len(DIFFICULTIES) * questions_per_category
+    total_questions = len(categories) * len(difficulties) * questions_per_category
     current_question = 0
     
-    for category in CATEGORIES:
-        for difficulty in DIFFICULTIES:
+    for category in categories:
+        for difficulty in difficulties:
             questions = generate_templatized_questions(category, difficulty, questions_per_category)
             
             for question in questions:
                 current_question += 1
                 print(f"Progress: {current_question}/{total_questions} - {category} ({difficulty})")
                 
-                qa_pair = create_qa_pair(question, book_text, category, difficulty)
+                qa_pair = get_answer_from_llm(question, book_text, category, difficulty)
                 dataset.append(qa_pair)
     
     return dataset
@@ -183,7 +198,7 @@ def create_specialized_dataset(book_text: str, category: str, difficulty: str, c
     
     for i, question in enumerate(questions, 1):
         print(f"Progress: {i}/{count} - {category} ({difficulty})")
-        qa_pair = create_qa_pair(question, book_text, category, difficulty)
+        qa_pair = get_answer_from_llm(question, book_text, category, difficulty)
         dataset.append(qa_pair)
     
     return dataset
@@ -193,8 +208,8 @@ def save_dataset(dataset: List[Dict[str, Any]], filename: str):
     dataset_info = {
         "metadata": {
             "total_samples": len(dataset),
-            "categories": list(set(qa["category"] for qa in dataset)),
-            "difficulties": list(set(qa["difficulty"] for qa in dataset)),
+            "categories": list(set(qa.get("category", "") for qa in dataset if qa.get("category"))),
+            "difficulties": list(set(qa.get("difficulty", "") for qa in dataset if qa.get("difficulty"))),
             "source": "Pride and Prejudice",
             "generation_method": "templatized_gemini"
         },
@@ -238,45 +253,7 @@ def show_preview(dataset: List[Dict[str, Any]], num_samples: int = 3):
         print(f"   Q: {qa['question']}")
         print(f"   A: {qa['answer'][:150]}...")
 
-def main():
-    """Main function - demonstrates different dataset creation approaches."""
-    print("🎯 Templatized IFT Dataset Creation with Gemini")
-    
-    book_text = load_book()
-    if not book_text:
-        return
-    
-    print("\nChoose dataset creation mode:")
-    print("1. Comprehensive dataset (all categories, all difficulties)")
-    print("2. Specialized dataset (single category and difficulty)")
-    
-    choice = input("\nEnter choice (1 or 2): ").strip()
-    
-    if choice == "1":
-        print("\nCreating comprehensive dataset...")
-        dataset = create_comprehensive_dataset(book_text, questions_per_category=2)
-        filename = "pride_prejudice_comprehensive_ift.json"
-    elif choice == "2":
-        print("\nAvailable categories:", CATEGORIES)
-        category = input("Enter category: ").strip()
-        
-        print("Available difficulties:", DIFFICULTIES)
-        difficulty = input("Enter difficulty: ").strip()
-        
-        count = int(input("Enter number of questions (default 10): ") or "10")
-        
-        print(f"\nCreating specialized dataset for {category} ({difficulty})...")
-        dataset = create_specialized_dataset(book_text, category, difficulty, count)
-        filename = f"pride_prejudice_{category}_{difficulty}_ift.json"
-    else:
-        print("Invalid choice!")
-        return
-    
-    show_dataset_stats(dataset)
-    show_preview(dataset)
-    save_dataset(dataset, filename)
-    
-    print(f"\n🎉 Created {len(dataset)} QA pairs!")
+
 
 if __name__ == "__main__":
     main()

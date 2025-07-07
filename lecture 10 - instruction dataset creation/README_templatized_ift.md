@@ -220,7 +220,7 @@ Difficulties:
 
 ### Common Issues
 - **API Errors**: Check your Gemini API key and internet connection
-- **File Not Found**: Ensure `datasets/pride_prejudice.txt` exists
+- **Download Errors**: Check your internet connection for downloading from Project Gutenberg
 - **Empty Responses**: May indicate API rate limiting or prompt issues
 
 ### Performance Optimization

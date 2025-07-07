@@ -12,11 +12,11 @@ def main():
     
     book_text = load_book()
     
-    questions = generate_questions(num_questions=15)
+    questions = generate_questions(num_questions=4)
     
-    save_questions(questions)
+    save_questions_to_file(questions)
     
-    questions = load_questions()
+    questions = load_questions_from_file()
     
     dataset = create_qa_pairs_from_llm(questions, book_text)
     
@@ -49,10 +49,13 @@ def ask_gemini(prompt):
 def load_book():
     """Load Pride and Prejudice text."""
     try:
-        with open("datasets/pride_prejudice.txt", "r", encoding="utf-8") as f:
-            return f.read()
-    except FileNotFoundError:
-        print("❌ Book file not found: datasets/pride_prejudice.txt")
+        import requests
+        print("📥 Downloading Pride and Prejudice from Project Gutenberg...")
+        text = requests.get("https://www.gutenberg.org/cache/epub/1342/pg1342.txt").text
+        print("✅ Text downloaded successfully")
+        return text
+    except Exception as e:
+        print(f"❌ Failed to download text: {e}")
         return ""
 
 def generate_questions(num_questions=10):
@@ -93,7 +96,7 @@ def get_answer_from_llm(question, book_text):
     
     return {"question": question, "answer": answer.strip()}
 
-def save_questions(questions, filename="questions.txt"):
+def save_questions_to_file(questions, filename="questions.txt"):
     """Save questions to a text file."""
     try:
         with open(filename, 'w', encoding='utf-8') as f:
@@ -103,7 +106,7 @@ def save_questions(questions, filename="questions.txt"):
     except Exception as e:
         print(f"❌ Failed to save questions: {e}")
 
-def load_questions(filename="questions.txt"):
+def load_questions_from_file(filename="questions.txt"):
     """Load questions from a text file."""
     try:
         with open(filename, 'r', encoding='utf-8') as f:
