@@ -64,7 +64,7 @@ peft_model.print_trainable_parameters()
 ```
 
 ```python
-print("7. Training...")
+print("Training...")
 training_args = transformers.TrainingArguments(
     output_dir="./alpaca_lora_model",
     num_train_epochs=1,
